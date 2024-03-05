@@ -1,5 +1,6 @@
 import {useState} from "react";
 import MatkaTable from "./MatkaTable.jsx"
+import MatkaGrid from "./MatkaGrid.jsx";
 
 export default function Matka() {
     const [matka, setMatka] = useState({kohde: '', kesto: ''});
@@ -15,7 +16,7 @@ export default function Matka() {
     }
 
     const deleteByIndex = (index) => {
-        setMatkat(matkat.filter((matka, i) => i !== index));
+        setMatkat(matkat.filter((matka, i) => i != index));
     }
 
     const itemRows = matkat.map((matka, index) => <tr key={index}>
@@ -43,6 +44,7 @@ export default function Matka() {
             onChange={handleInputChange}
         />
         <button onClick={addMatka}>Add</button>
-        <MatkaTable matkat={matkat} deleteByIndex={deleteByIndex}/>
+        <MatkaGrid matkat={matkat} deleteByIndex={deleteByIndex}/>
+
     </>
 }

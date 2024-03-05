@@ -1,6 +1,6 @@
 import React from "react";
 
-function MatkaTable({matkat, deleteByIndex}) {
+export default function MatkaTable({matkat, deleteByIndex}) {
     const itemRows = matkat.map((matka, index) => <tr key={index}>
         <td>{matka.kohde}</td>
         <td>{matka.kesto}</td>
@@ -21,5 +21,3 @@ function MatkaTable({matkat, deleteByIndex}) {
         </tbody>
     </table>
 }
-
-export default MatkaTable;
