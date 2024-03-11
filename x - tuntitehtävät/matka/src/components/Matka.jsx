@@ -1,5 +1,5 @@
 import {useState} from "react";
-import MatkaTable from "./MatkaTable.jsx"
+// import MatkaTable from "./MatkaTable.jsx"
 import MatkaGrid from "./MatkaGrid.jsx";
 
 export default function Matka() {
