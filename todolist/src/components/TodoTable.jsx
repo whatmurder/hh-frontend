@@ -1,4 +1,6 @@
+// OBSOLETE!!!
 import React from "react";
+
 
 export default function TodoTable({todos, deleteByIndex}) {
     const itemRows = todos.map((todo, index) => (<tr key={index}>

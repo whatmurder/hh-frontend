@@ -1,8 +1,10 @@
 import React, {useState} from "react";
-import TodoTable from "./TodoTable.jsx";
+import TodoGrid from "./TodoGrid.jsx";
+// import TodoTable from "./TodoTable.jsx";
+
 
 export default function Todolist() {
-    const [todo, setTodo] = useState({description: "", date: "", priority: ""});
+    const [todo, setTodo] = useState({date: "", description: "", priority: "Low"});
     const [todos, setTodos] = useState([]);
 
     const handleInputChange = (event) => {
@@ -10,21 +12,24 @@ export default function Todolist() {
     };
 
     const addTodo = () => {
-        // Check if the user has inputted both date and a description
         if (todo.date && todo.description) {
-            const newTodo = {...todo, priority: todo.priority || "Low"};
-            setTodos([...todos, newTodo]);
-            // Option to reset the fields.
-            //  setTodo({ description: "", date: "", priority: "" });
+            const newTodo = {
+                ...todo, id: Date.now(),
+            };
+            // ConsoleLog to see what was added:
+            console.log(`Added ToDo:\nDate: ${newTodo.date}\nDescription: ${newTodo.description}\nPriority: ${newTodo.priority}\nID: ${newTodo.id}`);
+            setTodos(todos => [...todos, newTodo]);
+            // Option to reset the input fields:
+            setTodo({date: "", description: "", priority: "Low"});
         } else {
             alert("Please enter both date and description!");
         }
     };
 
-
-    const deleteByIndex = (index) => {
-        setTodos(todos.filter((_, i) => i !== index));
+    const deleteTodoById = (todoId) => {
+        setTodos(todos.filter(todo => todo.id !== todoId));
     };
+
 
     return <>
 
@@ -54,7 +59,6 @@ export default function Todolist() {
             <option value="High">High</option>
         </select>
 
-        <button onClick={addTodo}>Add</button>
-        <TodoTable todos={todos} deleteByIndex={deleteByIndex}/>
+        <TodoGrid todos={todos} addTodo={addTodo} deleteTodoById={deleteTodoById}/>
     </>;
 }
