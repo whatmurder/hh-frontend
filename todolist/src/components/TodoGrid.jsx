@@ -6,9 +6,11 @@ import "ag-grid-community/styles/ag-theme-material.css"; // Material Design them
 
 
 export default function TodoGrid({todos, addTodo, deleteTodoById}) {
-    const [colDefs] = useState([{field: "date", filter: true, floatingFilter: true,}, {
-        field: "description", filter: true, floatingFilter: true
-    }, {field: "priority", filter: true, floatingFilter: true},]);
+    const [colDefs] = useState([
+        {field: "date", filter: true, floatingFilter: true,},
+        {field: "description", filter: true, floatingFilter: true},
+        {field: "priority", filter: true, floatingFilter: true},
+    ]);
 
     const gridRef = useRef();
 
