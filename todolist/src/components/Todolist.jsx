@@ -1,14 +1,22 @@
-import React, {useState} from "react";
+import React, {useState, useRef} from "react";
 import TodoGrid from "./TodoGrid.jsx";
-// import TodoTable from "./TodoTable.jsx";
-
+import {Button, MenuItem, Select, Stack, TextField} from "@mui/material";
+import {DatePicker} from '@mui/x-date-pickers/DatePicker';
+import {LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import "dayjs/locale/fi.js"
 
 export default function Todolist() {
-    const [todo, setTodo] = useState({date: "", description: "", priority: "Low"});
+    const [todo, setTodo] = useState({date: null, description: "", priority: "Low"});
     const [todos, setTodos] = useState([]);
+    const gridRef = useRef();
 
     const handleInputChange = (event) => {
         setTodo({...todo, [event.target.name]: event.target.value});
+    };
+
+    const handleDateChange = (date) => {
+        setTodo({...todo, date: date});
     };
 
     const addTodo = () => {
@@ -16,11 +24,9 @@ export default function Todolist() {
             const newTodo = {
                 ...todo, id: Date.now(),
             };
-            // ConsoleLog to see what was added:
             console.log(`Added ToDo:\nDate: ${newTodo.date}\nDescription: ${newTodo.description}\nPriority: ${newTodo.priority}\nID: ${newTodo.id}`);
             setTodos(todos => [...todos, newTodo]);
-            // Option to reset the input fields:
-            setTodo({date: "", description: "", priority: "Low"});
+            setTodo({date: null, description: "", priority: "Low"});
         } else {
             alert("Please enter both date and description!");
         }
@@ -30,35 +36,52 @@ export default function Todolist() {
         setTodos(todos.filter(todo => todo.id !== todoId));
     };
 
+    const onDelete = () => {
+        const selectedNodes = gridRef.current.getSelectedNodes();
+        if (selectedNodes.length > 0) {
+            const selectedTodo = selectedNodes[0].data;
+            const selectedId = selectedTodo.id;
+            deleteTodoById(selectedId);
+            console.log(`Deleted ToDo:\nDate: ${selectedTodo.date}\nDescription: ${selectedTodo.description}\nPriority: ${selectedTodo.priority}\nID: ${selectedTodo.id}`);
+        }
+    };
 
-    return <>
+    return (
+        <>
+            <Stack direction="row" spacing={3} justifyContent="space-between" alignItems="center">
 
-        <input
-            type="date"
-            name="date"
-            value={todo.date}
-            onChange={handleInputChange}
-        />
+                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fi">
+                    <DatePicker
+                        name="date"
+                        label="Date"
+                        value={todo.date}
+                        onChange={handleDateChange}
+                    />
+                </LocalizationProvider>
 
-        <input
-            type="text"
-            name="description"
-            placeholder="Activity"
-            value={todo.description}
-            onChange={handleInputChange}
-        />
+                <TextField
+                    name="description"
+                    label="Activity"
+                    value={todo.description}
+                    onChange={handleInputChange}
+                />
 
-        <select
-            id="priority"
-            name="priority"
-            value={todo.priority}
-            onChange={handleInputChange}
-        >
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
-        </select>
+                <Select
+                    id="priority"
+                    name="priority"
+                    value={todo.priority}
+                    onChange={handleInputChange}
+                >
+                    <MenuItem value="Low">Low</MenuItem>
+                    <MenuItem value="Medium">Medium</MenuItem>
+                    <MenuItem value="High">High</MenuItem>
+                </Select>
+                <Button onClick={addTodo}>Add</Button>
+                <Button onClick={onDelete}>Delete</Button>
 
-        <TodoGrid todos={todos} addTodo={addTodo} deleteTodoById={deleteTodoById}/>
-    </>;
+            </Stack>
+
+            <TodoGrid todos={todos} gridRef={gridRef}/>
+        </>
+    );
 }
