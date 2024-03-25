@@ -5,6 +5,8 @@ import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/fi.js"
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
 export default function Todolist() {
     const [todo, setTodo] = useState({date: null, description: "", priority: "Low"});
@@ -48,7 +50,7 @@ export default function Todolist() {
 
     return (
         <>
-            <Stack direction="row" spacing={3} justifyContent="space-between" alignItems="center">
+            <Stack mt={2} direction="row" spacing={3} justifyContent="space-evenly" alignItems="center">
 
                 <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fi">
                     <DatePicker
