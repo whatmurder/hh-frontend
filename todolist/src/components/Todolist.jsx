@@ -7,9 +7,10 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import "dayjs/locale/fi.js"
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import dayjs from "dayjs";
 
 export default function Todolist() {
-    const [todo, setTodo] = useState({date: null, description: "", priority: "Low"});
+    const [todo, setTodo] = useState({date: '', description: "", priority: "Low"});
     const [todos, setTodos] = useState([]);
     const gridRef = useRef();
 
@@ -18,7 +19,8 @@ export default function Todolist() {
     };
 
     const handleDateChange = (date) => {
-        setTodo({...todo, date: date});
+        const formattedDate = dayjs(date).format('DD/MM/YYYY')
+        setTodo({...todo, date: formattedDate});
     };
 
     const addTodo = () => {
@@ -28,7 +30,7 @@ export default function Todolist() {
             };
             console.log(`Added ToDo:\nDate: ${newTodo.date}\nDescription: ${newTodo.description}\nPriority: ${newTodo.priority}\nID: ${newTodo.id}`);
             setTodos(todos => [...todos, newTodo]);
-            setTodo({date: null, description: "", priority: "Low"});
+            setTodo({date: '', description: "", priority: "Low"});
         } else {
             alert("Please enter both date and description!");
         }
@@ -52,11 +54,8 @@ export default function Todolist() {
         <>
             <Stack mt={2} direction="row" spacing={3} justifyContent="space-evenly" alignItems="center">
 
-                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fi">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
-                        name="date"
-                        label="Date"
-                        value={todo.date}
                         onChange={handleDateChange}
                     />
                 </LocalizationProvider>
